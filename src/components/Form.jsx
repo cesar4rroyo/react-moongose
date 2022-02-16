@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { createUser } from "../actions/userAction";
 
 export default function Form() {
+  const dispacth = useDispatch();
   const [data, setData] = useState({
     user_github: "",
     email: "",
@@ -16,12 +19,23 @@ export default function Form() {
   }
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(data);
-    //SEND DATA TO SERVER
+    if (data.terms) {
+      dispacth(createUser(data));
+      resetForm();
+    } else {
+      alert("Please accept the terms and conditions");
+    }
+  }
+  function resetForm() {
+    setData({
+      user_github: "",
+      email: "",
+      terms: false,
+    });
   }
   const { user_github, email, terms } = data;
   return (
-    <form onSubmit={handleSubmit}>
+    <form method="POST" onSubmit={handleSubmit}>
       <div className="form-group">
         <label className="control-label" htmlFor="user_github">
           Usuario Github:
@@ -58,7 +72,7 @@ export default function Form() {
             type="checkbox"
             id="terms"
             name="terms"
-            value={terms}
+            checked={terms}
             onChange={handleChange}
           />
           Acepto los términos y condiciones

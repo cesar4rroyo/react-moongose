@@ -1,7 +1,10 @@
 import React from "react";
-import data from "./data";
+import { useSelector } from "react-redux";
 
 export default function Table() {
+  const state = useSelector((state) => state.user);
+  console.log(state);
+
   return (
     <table className="table bordered-table table-striped">
       <thead>
@@ -11,8 +14,8 @@ export default function Table() {
         </tr>
       </thead>
       <tbody>
-        {data.map((item) => (
-          <tr key={item.id}>
+        {state.map((item) => (
+          <tr key={item._id}>
             <td className="text-center">{item.user_github}</td>
             <td className="text-center">{item.email}</td>
           </tr>
